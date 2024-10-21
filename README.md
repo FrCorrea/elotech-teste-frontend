@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# Biblioteca Elotech
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Pré-requisitos
+Antes de começar, certifique-se de que você tenha instalado:
 
-Currently, two official plugins are available:
+Node.js (versão 16 ou superior) e npm ou yarn para gerenciar pacotes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Tecnologias Utilizadas
+React: Uma biblioteca JavaScript para construir interfaces de usuário.
 
-## Expanding the ESLint configuration
+TypeScript: Linguagem de programação que adiciona tipagem estática ao JavaScript.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Vite: Um bundler de aplicação web rápido e moderno.
 
-- Configure the top-level `parserOptions` property like this:
+Material-UI: Biblioteca para criar componentes UI no React.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Axios: Cliente HTTP para fazer requisições à API.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+ESLint: Ferramenta de linting para JavaScript/TypeScript.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+# PASSO A PASSO PARA RODAR O FRONTEND UTILIZANDO NPM
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Passo 1: npm install ou npm i
+
+Passo2 : npm run dev e acessar a porta que aparecerá no console
