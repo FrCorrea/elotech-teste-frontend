@@ -9,12 +9,14 @@ import BookList from './components/BookList';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import RecommendationsUser from './components/RecommendationsUser';
+import BookGoogleDocs from './components/BookGoogleDocs';
 
 import AddBookModal from './components/AddBookModal';
 import axios from 'axios';
 import EditBookModal from './components/EditBookModal';
 import AddUserModal from './components/AddUserModal';
 import EditUserModal from './components/EditUserModal';
+import { TextField } from '@mui/material';
 
 interface User {
   id: number | null;
@@ -49,6 +51,19 @@ interface Book {
   category: string;
 }
 
+interface BooksGoogle {
+  volumeInfo: {
+    title: string;
+    authors: string[];
+    industryIdentifiers: {
+      type: string;
+      identifier: string;
+    }[];
+    publishedDate: string;
+    categories: string[];
+  };
+}
+
 function App() {
 
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -65,6 +80,8 @@ function App() {
   const [openAddUserModal, setOpenAddUserModal] = useState<boolean>(false);
   const [openEditUserModal, setOpenEditUserModal] = useState<boolean>(false);
   const [editUserModal, setEditUserModal] = useState<User | null>(null);
+  const [googleBooks, setGoogleBooks] = useState<BooksGoogle[]>([]);
+  const [googleSearch, setGoogleSearch] = useState<string>('');
 
   useEffect(() => {
     if(selectedUserId) {
@@ -112,6 +129,21 @@ function App() {
   const handleCloseAddUserModal = () => {
     setOpenAddUserModal(false);
   };
+
+  const fetchBooksGoogle = async (title : string) => {
+    try {
+      const toLower = title.toLowerCase();
+      const finalTitle = toLower.split(' ').join('.');
+      console.log(finalTitle);
+      const response = await axios.get<BooksGoogle[]>(`/books/getForGoogle?title=${finalTitle}`);
+      setGoogleBooks(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Erro ao buscar livros. Tente novamente mais tarde. ' + err);
+      setLoading(false);
+    }
+  };
+
 
   const fetchBooks = async () => {
     try {
@@ -320,15 +352,29 @@ function App() {
               Adicionar Novo Livro
           </Button>
         </div>
+        
         <AddUserModal open={openAddUserModal} onClose={handleCloseAddUserModal} handleAddUser={handleAddUser} />
         <AddBookModal open={openAddBookModal} onClose={handleCloseAddBookModal} handleAddBook={handleAddBook} />
-
-
         <EditUserModal open={openEditUserModal} user={editUserModal} onClose={handleCloseEditUserModal} handleEditUser={handleEditUser} />
-
-
         <EditBookModal open={openEditBookModal} book={editBookModal} onClose={handleCloseEditBookModal} handleEditBook={handleEditBook} />
         <BookList userId={selectedUserId} books={books} loading={loading} error={error} handleLoan={handleLoan} handleOpenEditBookModal={handleOpenEditBookModal} deleteBook={deleteBook} />
+
+        <div
+          style={{
+            marginTop: '30px',
+            display: 'flex',
+          }}
+        >
+          <TextField
+            label='Pesquise um livro do Google Books'
+            fullWidth
+            value={googleSearch}
+            onChange={(e) => setGoogleSearch(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+        </div>
+        <Button variant="contained" color="primary" sx={{ mt: 4 }} onClick={() => fetchBooksGoogle(googleSearch)}>Pesquisar</Button>
+        <BookGoogleDocs handleSaveBook={handleAddBook} books={googleBooks} loading={loading} error={error} />
       </Box>
     </Container>
   );
